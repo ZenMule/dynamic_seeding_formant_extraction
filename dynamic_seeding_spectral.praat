@@ -14,6 +14,10 @@
 # the interval (First, second, and last 33%). Otherwise the script only uses 
 # one set of reference formant values.
 
+# The procedure of getting f0 corrected formant bandwidth and correcting 
+# the amplitudes are taken from James Kirby's PraatSauce: https://github.com/kirbyj/praatsauce.git
+
+
 # Please read the README.md file carefully on how to organize your recordings
 # and how to prepare for the reference files. If the preparation is not
 # done correctly, the script will not work.
