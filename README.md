@@ -104,8 +104,14 @@ This script only outputs `F1-3` without spectral moment measures in the `*_time.
 
 It logs corrected and uncorercted spectral tilt measures: H1-H2, H2-H4, H4-H2k, H2k-H5k, H1-A1, H1-A2, H1-A3 in addition to F0-4. The user can specify when using this script whether they also want the individual amplitude values (H1, H2, etc.) to be logged.
 
+# 6. Advantages
+
+1. It's accurate. With the seeding method that sets reference values for different segmetns, the formant estimation is more accurate than using the default tracking references. The Praat default is F1: 550, F2: 1650, F3: 2750, F4: 3850, F5: 4950, which is only ideal for schwa like central vowels. It is also accurate for getting formants from vowel sequences by setting different reference values across the course of a segment as there is usually formant excursions during the production of vowel sequences. This is something that most script and applications (E.g., VoiceSauce) fail to do as they do not allow you to specify reference values for different vowel segments all together.
+2. It's fast. With the reference files, and iteration through subfolders, the amount of time is much reduced than running scripts for each vowel and each speaker.
+3. The spectral tilt measures are more accurate with more accurate formant values. Spectral tilt measures are not so useful when the tracked formant values are inaccurate. Getting the accurate formant is crucial to getting the accurate spectral tilt measures as well. Especially if you also do spectral tilt measure correction based on the frequency and bandwidth of individual formant.
+
 ---
 
-# 6. Reference
+# 7. Reference
 
 [^1]: Chen, W. R., Whalen, D. H., & Shadle, C. H. (2019). F 0-induced formant measurement errors result in biased variabilities. The Journal of the Acoustical Society of America, 145(5), EL360-EL366.
