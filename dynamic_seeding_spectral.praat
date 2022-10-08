@@ -69,10 +69,6 @@ form Extract formants and spectral measures
 	boolean Include_individual_amplitudes 0
 endform
 
-form Which variables to output?
-	boolean F0_F1_F2_F3 1
-endform
-
 #######################################################################
 #######################################################################
 
