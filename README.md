@@ -72,7 +72,7 @@ After up to 3 or 4 formants and the spectral moments are obtained, the results w
 
 ## 4.1. The logic of step-wise formant optimization
 
-The idea of step-wise optimization is inspired by Christopher Caringan's praat script: https://github.com/ZenMule/formant-optimization.git
+The idea of step-wise optimization is inspired by Christopher Caringan's praat script: [ChristopherCarignan/formant-optimization](https://github.com/ChristopherCarignan/formant-optimization.git).
 
 It first iterate from the lowest value of the ceiling frequency to the highest value with a step frequency (e.g., 50Hz or 100Hz) that can be set by the user, to track the formants. Then for each time point, it filters out undefined values and outliers that are 2 standard deviations away from the mean first. Then it takes the median value for each time point of each segment to be the final extracted formant values at the time point.
 
