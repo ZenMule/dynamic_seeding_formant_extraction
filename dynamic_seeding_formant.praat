@@ -73,6 +73,12 @@ pauseScript: "Choose < SPEAKER LOG > file"
 table_sp_name$ = chooseReadFile$: "Please choose the < SPEAKER LOG > file"
 if table_sp_name$ <> ""
     table_sp = Read Table from comma-separated file: table_sp_name$
+	ncol_sp = Get number of columns
+	if ncol_sp <> 2
+		removeObject: table_sp
+		exitScript: "This is not the < SPEAKER LOG > file." + newline$ 
+		...+ "Read the README file and make sure your < SPEAKER LOG > file has exactly TWO columns and is formatted correctly."
+	endif
 else
 	exitScript: "No < SPEAKER LOG > file was selected."
 endif
@@ -82,6 +88,12 @@ pauseScript: "Choose < FORMANT REFERENCE > file"
 table_ref_name$ = chooseReadFile$: "Please choose the < FORMANT REFERENCE > file"
 if table_ref_name$ <> ""
     table_ref = Read Table from comma-separated file: table_ref_name$
+	ncol_ref = Get number of columns
+	if ncol_ref <> 11
+		removeObject: table_ref
+		exitScript: "This is not the < FORMANT REFERENCE > file." + newline$ 
+		...+ "Read the README file and make sure your FORMANT REFERENCE file has ELEVEN columns and is formatted correctly."
+	endif
 else
 	exitScript: "No < FORMANT REFERENCE > file was selected."
 endif
@@ -91,16 +103,25 @@ pauseScript: "Choose < FORMANT CEILING > file"
 table_ceiling_name$ = chooseReadFile$: "Please choose the < FORMANT CEILING > file"
 if table_ceiling_name$ <> ""
     table_ceiling = Read Table from comma-separated file: table_ceiling_name$
+	ncol_ceiling = Get number of columns
+	if ncol_ceiling <> 3
+		removeObject: table_ceiling
+		exitScript: "This is not the < FORMANT CEILING > file." + newline$ 
+		...+ "Read the README file and make sure your FORMANT REFERENCE file has ELEVEN columns and is formatted correctly."
+	endif
 else
-	exitScript: "No < FORMANT CEILING > file was selected."
+		exitScript: "No < FORMANT CEILING > file was selected."
 endif
 
 # Get all the folders in the directory
 # Choose the root folder of the recordings of all speakers
 pauseScript: "Choose < SOUND FILE > folder"
-dir_rec$ = chooseDirectory$: "Choose <SOUND> folder"
+dir_rec$ = chooseDirectory$: "Choose <SOUND FILE> subordinate folder"
 if dir_rec$ <> ""
   	folderNames$# = folderNames$# (dir_rec$)
+	if size (folderName$#) = 0
+		exitScript: "There are no subfolders in the directory you just chose."
+	endif
 else
 	exitScript: "No folder was selected."
 endif
@@ -186,7 +207,7 @@ procedure write_tab_t: .table
 	Set string value: .row, "Syll", syll$
 	Set string value: .row, "Word", word$
 	Set numeric value: .row, "t", i_chunk
-	Set numeric value: .row, "t_m", round(chunk_mid*1000)
+	Set numeric value: .row, "t_m", chunk_mid
 	Set numeric value: .row, "F1", round(f1)
 	Set numeric value: .row, "F2", round(f2)
 	Set numeric value: .row, "F3", round(f3)
@@ -415,7 +436,7 @@ for i_folder from 1 to size (folderNames$#)
 						# Get the start, end, and middle point of the interval
 						chunk_start = buffer_window_length + (i_chunk - 1) * chunk_length
 						chunk_end = buffer_window_length + i_chunk * chunk_length
-						chunk_mid = chunk_length/2 + (i_chunk - 1) * chunk_length - label_start
+						chunk_mid = round((chunk_length/2 + (i_chunk - 1) * chunk_length)*1000)
 
 						if len_lbl = 1
 							selectObject: formant_tracked

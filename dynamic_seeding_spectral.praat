@@ -78,37 +78,58 @@ endform
 
 # Read in the speaker log and vowel reference file
 pauseScript: "Choose < SPEAKER LOG > file"
-table_sp_name$ = chooseReadFile$: "Load the SPEAKER LOG file"
+table_sp_name$ = chooseReadFile$: "Please choose the < SPEAKER LOG > file"
 if table_sp_name$ <> ""
     table_sp = Read Table from comma-separated file: table_sp_name$
+	ncol_sp = Get number of columns
+	if ncol_sp <> 2
+		removeObject: table_sp
+		exitScript: "This is not the < SPEAKER LOG > file." + newline$ 
+		...+ "Read the README file and make sure your < SPEAKER LOG > file has exactly TWO columns and is formatted correctly."
+	endif
 else
-		exitScript: "No < SPEAKER LOG > file was selected."
+	exitScript: "No < SPEAKER LOG > file was selected."
 endif
 
 # Formant reference
-pauseScript: "Choose <FORMANT REFERENCE> file"
-table_ref_name$ = chooseReadFile$: "Load the FORMANT REFERENCE file"
+pauseScript: "Choose < FORMANT REFERENCE > file"
+table_ref_name$ = chooseReadFile$: "Please choose the < FORMANT REFERENCE > file"
 if table_ref_name$ <> ""
     table_ref = Read Table from comma-separated file: table_ref_name$
+	ncol_ref = Get number of columns
+	if ncol_ref <> 11
+		removeObject: table_ref
+		exitScript: "This is not the < FORMANT REFERENCE > file." + newline$ 
+		...+ "Read the README file and make sure your FORMANT REFERENCE file has ELEVEN columns and is formatted correctly."
+	endif
 else
-		exitScript: "No < FORMANT REFERENCE > file was selected."
+	exitScript: "No < FORMANT REFERENCE > file was selected."
 endif
 
 # Formant ceiling and number of formants to track
-pauseScript: "Choose <FORMANT SETTING> file"
-table_ceiling_name$ = chooseReadFile$: "Load the FORMANT CEILING file"
+pauseScript: "Choose < FORMANT CEILING > file"
+table_ceiling_name$ = chooseReadFile$: "Please choose the < FORMANT CEILING > file"
 if table_ceiling_name$ <> ""
     table_ceiling = Read Table from comma-separated file: table_ceiling_name$
+	ncol_ceiling = Get number of columns
+	if ncol_ceiling <> 3
+		removeObject: table_ceiling
+		exitScript: "This is not the < FORMANT CEILING > file." + newline$ 
+		...+ "Read the README file and make sure your FORMANT REFERENCE file has ELEVEN columns and is formatted correctly."
+	endif
 else
-		exitScript: "No < FORMANT SETTING > file was selected."
+		exitScript: "No < FORMANT CEILING > file was selected."
 endif
 
 # Get all the folders in the directory
 # Choose the root folder of the recordings of all speakers
-pauseScript: "Choose < SOUND FILE > subordinate folder"
+pauseScript: "Choose < SOUND FILE > folder"
 dir_rec$ = chooseDirectory$: "Choose <SOUND FILE> subordinate folder"
 if dir_rec$ <> ""
   	folderNames$# = folderNames$# (dir_rec$)
+	if size (folderName$#) = 0
+		exitScript: "There are no subfolders in the directory you just chose."
+	endif
 else
 	exitScript: "No folder was selected."
 endif
