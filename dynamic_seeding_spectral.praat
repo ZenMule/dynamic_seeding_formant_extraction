@@ -127,7 +127,7 @@ pauseScript: "Choose < SOUND FILE > folder"
 dir_rec$ = chooseDirectory$: "Choose <SOUND FILE> subordinate folder"
 if dir_rec$ <> ""
   	folderNames$# = folderNames$# (dir_rec$)
-	if size (folderName$#) = 0
+	if size (folderNames$#) = 0
 		exitScript: "There are no subfolders in the directory you just chose."
 	endif
 else

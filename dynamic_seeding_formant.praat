@@ -119,7 +119,7 @@ pauseScript: "Choose < SOUND FILE > folder"
 dir_rec$ = chooseDirectory$: "Choose <SOUND FILE> subordinate folder"
 if dir_rec$ <> ""
   	folderNames$# = folderNames$# (dir_rec$)
-	if size (folderName$#) = 0
+	if size (folderNames$#) = 0
 		exitScript: "There are no subfolders in the directory you just chose."
 	endif
 else
@@ -298,13 +298,6 @@ for i_folder from 1 to size (folderNames$#)
 		textgrid_file = Read from file: dir_rec$ + "/" + speaker_id$ + "/" + sound_name$ + ".TextGrid"
 		num_label = Get number of intervals: labeled_tier_number
 
-		writeInfoLine: "Progress: ", percent$((prog_num)/total_seg_num, 1), " (intervals: 'prog_num'/'total_seg_num')"
-		appendInfoLine: ""
-		appendInfoLine: "	Current speaker: < 'speaker_id$' >"
-		appendInfoLine: ""
-		appendInfoLine: "		Current sound file: < 'wav_name$' >"
-		appendInfoLine: ""
-
     	#######################################################################
 
     	# Loop through all the labeled intervals
@@ -319,6 +312,12 @@ for i_folder from 1 to size (folderNames$#)
 			if label$ <> "" and idx <> 0
 				len_lbl = length (label$)
 				prog_num = prog_num + 1
+				writeInfoLine: "Progress: ", percent$((prog_num)/total_seg_num, 1), " (intervals: 'prog_num'/'total_seg_num')"
+				appendInfoLine: ""
+				appendInfoLine: "	Current speaker: < 'speaker_id$' >"
+				appendInfoLine: ""
+				appendInfoLine: "		Current sound file: < 'wav_name$' >"
+				appendInfoLine: ""
 				appendInfoLine: "			Current interval ['i_label']: <'label$'>."
 
 				# Get the duration of the labeled interval

@@ -83,7 +83,7 @@ table_sp_name$ = chooseReadFile$: "Please choose the < SPEAKER LOG > file"
 if table_sp_name$ <> ""
     table_sp = Read Table from comma-separated file: table_sp_name$
 	ncol_sp = Get number of columns
-	if ncol_sp <> 11
+	if ncol_sp <> 2
 		exitScript: "This is not the < SPEAKER LOG > file." + newline$ + "Read the README file and make sure your SPEAKER LOG file has TWO columns and formatted correctly."
 	endif
 else
@@ -109,7 +109,7 @@ pauseScript: "Choose the < SOUND FILE > folder that contains subfolders"
 dir_rec$ = chooseDirectory$: "Choose < SOUND FILE > folder"
 if dir_rec$ <> ""
   	folderNames$# = folderNames$# (dir_rec$)
-	if size (folderName$#) = 0
+	if size (folderNames$#) = 0
 		exitScript: "There are no subfolders in the directory you just chose."
 	endif
 else
