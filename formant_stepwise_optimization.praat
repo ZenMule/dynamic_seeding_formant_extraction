@@ -384,8 +384,7 @@ for i_folder from 1 to size (folderNames$#)
 				fstart = label_start - buffer_window_length
 				fend = label_end + buffer_window_length
 				selectObject: sound_file
-				Extract part: fstart, fend, "rectangular", 1, "no"
-				extracted = selected("Sound")
+				extracted = Extract part: fstart, fend, "rectangular", 1, "no"
 
 	      		# Get the duration of each equidistant interval of a labeled segment
 				chunk_length  = dur/number_of_chunks
@@ -413,13 +412,11 @@ for i_folder from 1 to size (folderNames$#)
 
 						if len_lbl = 1
 							selectObject: formant_burg
-							Track: number_tracks, f1_ref, f2_ref, f3_ref, f4_ref, f5_ref, 1, 1, 1
-							Rename: "tracked_'sound_name$'_'i_label'_'label$'" 
+							formant_tracked = Track: number_tracks, f1_ref, f2_ref, f3_ref, f4_ref, f5_ref, 1, 1, 1
 						else
 							for i_tile from 1 to 3
 								selectObject: formant_burg
-								Track: number_tracks, f1_ref_'i_tile', f2_ref_'i_tile', f3_ref_'i_tile', f4_ref, f5_ref, 1, 1, 1
-								Rename: "tracked_'sound_name$'_'i_label'_'label$'_'i_tile'" 
+								formant_tracked_'i_tile' = Track: number_tracks, f1_ref_'i_tile', f2_ref_'i_tile', f3_ref_'i_tile', f4_ref, f5_ref, 1, 1, 1
 							endfor
 						endif
 					
@@ -430,7 +427,7 @@ for i_folder from 1 to size (folderNames$#)
 							chunk_mid_'i_chunk' = round((chunk_length/2 + (i_chunk - 1) * chunk_length)*1000)
 
 							if len_lbl = 1
-								selectObject: "Formant tracked_'sound_name$'_'i_label'_'label$'"
+								selectObject: formant_tracked
 									for i_f from 1 to 3
 										f'i_f' = Get mean: i_f, chunk_start, chunk_end, "hertz"
 										if f'i_f' = undefined
@@ -440,7 +437,7 @@ for i_folder from 1 to size (folderNames$#)
 							else 
 								for i_tile from 1 to 3
 									if i_chunk < i_tile * number_of_chunks/3 and i_chunk >= (i_tile - 1) * number_of_chunks/3	
-										selectObject: "Formant tracked_'sound_name$'_'i_label'_'label$'_'i_tile'"				
+										selectObject: formant_tracked_'i_tile'				
 										for i_f from 1 to 3
 											f'i_f' = Get mean: i_f, chunk_start, chunk_end, "hertz"
 											if f'i_f' = undefined
@@ -462,10 +459,10 @@ for i_folder from 1 to size (folderNames$#)
 
 						# Remove the tracked formant object
 						if len_lbl = 1
-							removeObject: "Formant tracked_'sound_name$'_'i_label'_'label$'"
+							removeObject: formant_tracked
 						else
 							for i_tile from 1 to 3
-								removeObject: "Formant tracked_'sound_name$'_'i_label'_'label$'_'i_tile'"
+								removeObject: formant_tracked_'i_tile'
 							endfor
 						endif
 					endif
