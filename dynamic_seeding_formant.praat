@@ -139,21 +139,21 @@ selectObject: table_ref
 nrow_ref = Get number of rows
 v_col$ = Get column label: 1
 
-targets$ = "" 
+targets$ = ""
 
 for i to nrow_ref
 	selectObject: table_ref
 	i_vowel$ = Get value: i, v_col$
-	if index(targets$, i_vowel$) = 0
-		if i <> nrow_ref	
-			targets$ = targets$ + i_vowel$ + " "
-		else
-			targets$ = targets$ + i_vowel$
-		endif
+	targets$# = splitByWhitespace$# (targets$)
+	idx_v = index(targets$#, i_vowel$)
+	if idx_v = 0
+		targets$ = targets$ + i_vowel$ + " "
 	endif
 endfor
 
 targets$# = splitByWhitespace$# (targets$)
+writeInfoLine: targets$#
+pauseScript: "Check your target segments."
 
 # Create tables to save the result
 tab_t = Create Table with column names: "tab_t", 0, {"File_name", 
@@ -306,7 +306,6 @@ for i_folder from 1 to size (folderNames$#)
 			label$ = Get label of interval: labeled_tier_number, i_label
 			idx = index(targets$#, label$)
 			
-
       		#######################################################################
 
 			if label$ <> "" and idx <> 0
@@ -447,7 +446,7 @@ for i_folder from 1 to size (folderNames$#)
 							endfor
 						else 
 							for i_tile from 1 to 3
-								if i_chunk <= i_tile * number_of_chunks/3 and i_chunk >= (i_tile - 1) * number_of_chunks/3	
+								if i_chunk <= i_tile * number_of_chunks/3 and i_chunk > (i_tile - 1) * number_of_chunks/3	
 									selectObject: formant_tracked_'i_tile'				
 									for i_f from 1 to 4
 										f'i_f' = Get mean: i_f, chunk_start, chunk_end, "hertz"
