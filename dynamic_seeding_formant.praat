@@ -309,7 +309,6 @@ for i_folder from 1 to size (folderNames$#)
       		#######################################################################
 
 			if label$ <> "" and idx <> 0
-				len_lbl = length (label$)
 				prog_num = prog_num + 1
 				writeInfoLine: "Progress: ", percent$((prog_num)/total_seg_num, 1), " (intervals: 'prog_num'/'total_seg_num')"
 				appendInfoLine: ""
@@ -379,25 +378,25 @@ for i_folder from 1 to size (folderNames$#)
 				v_row = v_row# [1]
 
 				appendInfoLine: ""
-				if len_lbl = 1
+				tertiles$# = {"Initial", "Medial", "Final"}
+				for i_tile from 1 to 3
 					for i_f from 1 to 3
 						selectObject: table_ref
-						ref_col$ = Get column label: 6 + (i_f-1)
-						f'i_f'_ref = Get value: v_row, ref_col$
-						appendInfoLine: "				Reference F'i_f': ", f'i_f'_ref
+						ref_col$ = Get column label: 3 + (i_tile-1)*3 + (i_f-1)
+						f'i_f'_ref_'i_tile' = Get value: v_row, ref_col$
 					endfor
-				else
-					tertiles$# = {"Initial", "Medial", "Final"}
-					for i_tile from 1 to 3
-						for i_f from 1 to 3
-							selectObject: table_ref
-							ref_col$ = Get column label: 3 + (i_tile-1)*3 + (i_f-1)
-							f'i_f'_ref_'i_tile' = Get value: v_row, ref_col$
-							appendInfoLine: "				", tertiles$# [i_tile], " reference F'i_f': ", f'i_f'_ref_'i_tile'
-						endfor
-						appendInfoLine: ""
-					endfor	
-				endif
+				endfor	
+
+				# If the ref value is 0, equat it to the ref value of the medial 33.3%
+				for i_tile from 1 to 3
+					for i_f from 1 to 3
+						if f'i_f'_ref_'i_tile' = 0
+							f'i_f'_ref_'i_tile' = f'i_f'_ref_2
+						endif
+						appendInfoLine: "				", tertiles$# [i_tile], " reference F'i_f': ", f'i_f'_ref_'i_tile'
+					endfor
+					appendInfoLine: ""
+				endfor
 
 				#######################################################################
 
@@ -419,15 +418,10 @@ for i_folder from 1 to size (folderNames$#)
 	      		if num_form >= 2 and num_form <= 4
 	        		number_tracks = num_form
 
-					if len_lbl = 1
+					for i_tile from 1 to 3
 						selectObject: formant_burg
-						formant_tracked = Track: number_tracks, f1_ref, f2_ref, f3_ref, f4_ref, f5_ref, 1, 1, 1
-					else
-						for i_tile from 1 to 3
-							selectObject: formant_burg
-							formant_tracked_'i_tile' = Track: number_tracks, f1_ref_'i_tile', f2_ref_'i_tile', f3_ref_'i_tile', f4_ref, f5_ref, 1, 1, 1
-						endfor
-					endif
+						formant_tracked_'i_tile' = Track: number_tracks, f1_ref_'i_tile', f2_ref_'i_tile', f3_ref_'i_tile', f4_ref, f5_ref, 1, 1, 1
+					endfor
 
 					# Track the formants
 					for i_chunk from 1 to number_of_chunks
@@ -436,27 +430,17 @@ for i_folder from 1 to size (folderNames$#)
 						chunk_end = buffer_window_length + i_chunk * chunk_length
 						chunk_mid = round((chunk_length/2 + (i_chunk - 1) * chunk_length)*1000)
 
-						if len_lbl = 1
-							selectObject: formant_tracked
-							for i_f from 1 to 4
-								f'i_f' = Get mean: i_f, chunk_start, chunk_end, "hertz"
-								if f'i_f' = undefined
-									f'i_f' = 0
-								endif
-							endfor
-						else 
-							for i_tile from 1 to 3
-								if i_chunk <= i_tile * number_of_chunks/3 and i_chunk > (i_tile - 1) * number_of_chunks/3	
-									selectObject: formant_tracked_'i_tile'				
-									for i_f from 1 to 4
-										f'i_f' = Get mean: i_f, chunk_start, chunk_end, "hertz"
-										if f'i_f' = undefined
-											f'i_f' = 0
-										endif
-									endfor 
-								endif
-							endfor
-						endif
+						for i_tile from 1 to 3
+							if i_chunk <= i_tile * number_of_chunks/3 and i_chunk > (i_tile - 1) * number_of_chunks/3	
+								selectObject: formant_tracked_'i_tile'				
+								for i_f from 1 to 4
+									f'i_f' = Get mean: i_f, chunk_start, chunk_end, "hertz"
+									if f'i_f' = undefined
+										f'i_f' = 0
+									endif
+								endfor 
+							endif
+						endfor
 
 						#######################################################################
 
@@ -477,13 +461,9 @@ for i_folder from 1 to size (folderNames$#)
 					endfor
 
 					# Remove the tracked formant object
-					if len_lbl = 1
-						removeObject: formant_tracked
-					else
-						for i_tile from 1 to 3
-							removeObject: formant_tracked_'i_tile'
-						endfor
-					endif
+					for i_tile from 1 to 3
+						removeObject: formant_tracked_'i_tile'
+					endfor
 				endif
 				# Remove
 				removeObject: formant_burg, extracted
