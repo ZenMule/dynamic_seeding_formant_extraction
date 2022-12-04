@@ -8,7 +8,7 @@
 # durational and contextual information and the other formant related
 # information.
 
-# This program will extract formant values depending if the labeled
+# This program will extract formant values depending on if the labeled
 # interval contains a vowel sequence or monophthong. It the labeled
 # interval is a vowel sequence, the script will use three sets of
 # reference formant values to track formants in the three tertiles from
@@ -23,7 +23,7 @@
 
 # Copyright (c) 2021-2022 Miao Zhang
 
-# This program is free software: you can redistribute it and/or modify
+# This program is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
