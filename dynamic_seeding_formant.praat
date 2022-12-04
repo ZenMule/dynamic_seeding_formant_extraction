@@ -338,7 +338,7 @@ for i_folder from 1 to size (folderNames$#)
 				# Get the lable of the syllable from the syllable tier if there is one
 				if syllable_tier_number <> 0
 					# Get the index of the current syllable that the labeled segment occurred in
-					syll_num = Get interval at time: syllable_tier_number, label_start
+					syll_num = Get interval at time: syllable_tier_number, label_start + dur/2
 
 					# Get the duration of the syllable
 					syll_start = Get starting point: syllable_tier_number, syll_num
@@ -354,7 +354,7 @@ for i_folder from 1 to size (folderNames$#)
 				# Get the label of the word from the word tier if there is one
 				if word_tier_number <> 0
 					# Get the index of the current word
-					word_num = Get interval at time: word_tier_number, label_start
+					word_num = Get interval at time: word_tier_number, label_start + dur/2
 
 					# Get the word duration
 					word_start = Get starting point: word_tier_number, word_num
