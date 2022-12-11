@@ -147,22 +147,24 @@ selectObject: table_ref
 nrow_ref = Get number of rows
 v_col$ = Get column label: 1
 
-targets$ = "" 
+targets$ = ""
 
 for i to nrow_ref
 	selectObject: table_ref
 	i_vowel$ = Get value: i, v_col$
-	if index(targets$, i_vowel$) = 0
-		if i <> nrow_ref	
-			targets$ = targets$ + i_vowel$ + " "
-		else
-			targets$ = targets$ + i_vowel$
-		endif
+	targets$# = splitByWhitespace$# (targets$)
+	idx_v = index(targets$#, i_vowel$)
+	if idx_v = 0
+		targets$ = targets$ + i_vowel$ + " "
 	endif
 endfor
 
 targets$# = splitByWhitespace$# (targets$)
+writeInfoLine: targets$#
+pauseScript: "Check your target segments."
 
+
+# Create output files
 sep$ = ","
 output_t$ = dir_rec$ + log_file_t$ + ".csv"
 deleteFile: output_t$
@@ -289,6 +291,8 @@ for i_folder from 1 to size (folderNames$#)
 		for i_label from 1 to num_label
 			selectObject: textgrid_file
 			label$ = Get label of interval: labeled_tier_number, i_label
+			# Replace the accident white space and tab with null string
+			label$ = replace_regex$ (label$, "[\s|\t]+", "", 0)
 			idx = index(targets$#, label$)
 
 			if label$ <> "" and idx <> 0
@@ -342,6 +346,8 @@ for i_folder from 1 to size (folderNames$#)
 		for i_label from 1 to num_label
 			selectObject: textgrid_file
 			label$ = Get label of interval: labeled_tier_number, i_label
+			# Replace the accident white space and tab with null string
+			label$ = replace_regex$ (label$, "[\s|\t]+", "", 0)
 			idx = index(targets$#, label$)
 
       		#######################################################################

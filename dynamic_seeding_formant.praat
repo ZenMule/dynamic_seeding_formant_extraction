@@ -253,6 +253,7 @@ for i_folder from 1 to size (folderNames$#)
 		for i_label from 1 to num_label
 			selectObject: textgrid_file
 			label$ = Get label of interval: labeled_tier_number, i_label
+			label$ = replace_regex$ (label$, "[\s|\t]+", "", 0)
 			idx = index(targets$#, label$)
 
 			if label$ <> "" and idx <> 0
@@ -304,10 +305,13 @@ for i_folder from 1 to size (folderNames$#)
 		for i_label from 1 to num_label
 			selectObject: textgrid_file
 			label$ = Get label of interval: labeled_tier_number, i_label
+			# Replace the accident white space and tab with null string
+			label$ = replace_regex$ (label$, "[\s|\t]+", "", 0)
 			idx = index(targets$#, label$)
 			
       		#######################################################################
 
+			# If the label is not a null string and is one of the target segments
 			if label$ <> "" and idx <> 0
 				prog_num = prog_num + 1
 				writeInfoLine: "Progress: ", percent$((prog_num)/total_seg_num, 1), " (intervals: 'prog_num'/'total_seg_num')"
