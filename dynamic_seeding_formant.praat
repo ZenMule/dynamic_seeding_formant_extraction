@@ -494,17 +494,17 @@ runtime = stopwatch
 runtime = round(runtime)
 if runtime < 60
 	if runtime < 10
-		appendInfoLine: "Total run time is 00:00:0'runtime'"
+		appendInfoLine: "Total run time was 00:00:0'runtime'"
 	else 
-		appendInfoLine: "Total run time is 00:00:'runtime'"
+		appendInfoLine: "Total run time was 00:00:'runtime'"
 	endif
 elsif runtime < 3600
 	minute = runtime div 60
 	second = runtime mod 60
 	if minute < 10
-		appendInfo: "The total run time is 00:0'minute':"
+		appendInfo: "The total run time was 00:0'minute':"
 	else 
-		appendInfo: "The total run time is 00:'minute':"
+		appendInfo: "The total run time was 00:'minute':"
 	endif
 	if second < 10
 		appendInfoLine: "0'second'"
@@ -517,9 +517,9 @@ else
 	minute = rest div 60
 	second = rest mod 60
 	if hour < 10
-		appendInfo: "The total run time is 0'hour':"
+		appendInfo: "The total run time was 0'hour':"
 	else
-		appendInfo: "The total run time is 'hour':"
+		appendInfo: "The total run time was 'hour':"
 	endif
 	if minute < 10
 		appendInfo: "0'minute':"
