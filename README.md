@@ -1,4 +1,4 @@
-# 1. Dynamic seeding scripts bundle
+# 1. Dynamic seeding formant extracting script bundle
 
 This is a bundle of scripts that incorporated seeding method (Chen et al. 2019)[^1] and dynamic formant reference value settings to extract more accurate formants from vocalic segments. Three scripts are found in this bundle:
 
